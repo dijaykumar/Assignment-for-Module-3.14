@@ -27,13 +27,20 @@ jobs:
     - name: Run tests
       run: npm test
 
-    - name: Snyk - Test for vulnerabilities
-      uses: snyk/actions@v1  # Correct action reference
-      with:
-        snyk-token: ${{ secrets.SNYK_TOKEN }}  # Snyk API token
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # Snyk API token for authentication
-     
+name: Example workflow using Snyk
+on: push
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
+          
     - name: Build project
       run: npm run build  # Adjust this if you have a build script
 
