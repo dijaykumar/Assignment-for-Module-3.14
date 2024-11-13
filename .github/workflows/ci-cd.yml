@@ -27,6 +27,13 @@ jobs:
     - name: Run tests
       run: npm test
 
+    - name: Snyk - Test for vulnerabilities
+      uses: snyk/actions/nodejs@v2
+      with:
+        snyk-token: ${{ secrets.SNYK_TOKEN }}  # Use your Snyk API token
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}   # Snyk API token for authentication
+     
     - name: Build project
       run: npm run build  # Adjust this if you have a build script
 
