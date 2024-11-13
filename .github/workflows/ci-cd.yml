@@ -28,9 +28,9 @@ jobs:
       run: npm test
 
     - name: Snyk - Test for vulnerabilities
-      uses: snyk/actions@v1.0.0  # Correct version tag
+      uses: snyk/snyk-actions@v1  # Correct action and version
       with:
-        snyk-token: ${{ secrets.SNYK_TOKEN }}  # Use your Snyk API token
+        snyk-token: ${{ secrets.SNYK_TOKEN }}  # Snyk API token
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # Snyk API token for authentication
      
