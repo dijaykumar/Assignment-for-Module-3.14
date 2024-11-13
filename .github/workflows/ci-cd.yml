@@ -1,49 +1,52 @@
 name: CI/CD Pipeline
 
-on:
+on: 
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - main  # Trigger on push to the main branch
 
 jobs:
+  # Job to run your build and tests
   build:
+    runs-on: ubuntu-latest  # You can use 'ubuntu-latest' for a Linux environment
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2  # This step checks out your code
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Specify the Node.js version for your project
+
+      - name: Install dependencies
+        run: npm install  # Install Node.js dependencies
+
+      - name: Run tests
+        run: npm test  # Run your tests
+
+  # Job to run Snyk security scan for vulnerabilities
+  security:
+    runs-on: ubuntu-latest  # Run on the same Ubuntu environment
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2  # Ensure the code is available for analysis
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@v2  # Correct Snyk action for Node.js
+        with:
+          command: monitor  # Run 'monitor' to check for vulnerabilities
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # Pass in the Snyk API token for authentication
+
+  # (Optional) Deployment job, only if tests pass
+  deploy:
+    if: success()  # Only deploy if previous jobs succeed (e.g., build + test)
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'  # Specify the Node.js version
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run tests
-      run: npm test
-
-    - name: Example workflow using Snyk
-      on: push
-      security:
-      runs-on: ubuntu-latest
-      - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
-          
-    - name: Build project
-      run: npm run build  # Adjust this if you have a build script
-
-    - name: Deploy (Optional)
-      if: success()  # Only deploy if tests pass
-      run: |
-        echo "Deploying to production..."
-        # Add your deploy commands here
+      - name: Deploy to production
+        run: |
+          echo "Deploying application..."
+          # Add your deployment commands here, e.g., using AWS CLI, SSH, etc.
