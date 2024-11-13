@@ -31,10 +31,10 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v2  # Ensure the code is available for analysis
+        uses: actions/checkout@master  # Ensure the code is available for analysis
 
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@v2  # Correct Snyk action for Node.js
+        uses: snyk/actions/node@master  # Correct Snyk action for Node.js
         with:
           command: monitor  # Run 'monitor' to check for vulnerabilities
         env:
