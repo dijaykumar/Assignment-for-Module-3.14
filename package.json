@@ -1,0 +1,22 @@
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "description": "A simple Node.js project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 1",  // Default test script
+    "start": "node index.js",                       // Starting the app
+    "build": "echo \"Building project...\" && exit 0" // Placeholder for build command
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    // List of dependencies (empty for now, you can add later)
+  },
+  "devDependencies": {
+    // List of development dependencies (empty for now)
+  },
+  "engines": {
+    "node": ">=16.0.0" // Specify the minimum Node.js version (optional)
+  }
+}
